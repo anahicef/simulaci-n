@@ -1,2 +1,2 @@
-# simulaci-n
+# simulación
 Practicas de simulación computacional 
