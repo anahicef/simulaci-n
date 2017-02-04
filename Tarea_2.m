@@ -1,6 +1,6 @@
 clc
 #Definicion de variables
-t=5;        #tiempo
+t=15;        #tiempo
 l=5;        #largo de eje
 a=0;
 
@@ -17,31 +17,40 @@ for i=1:t                    #Bucle de tiempo
 #se suma al numero aleatorio generado
   A=round(unifrnd(-1,1,1,1));
   B=round(unifrnd(-1,1,1,1));
+  C=round(unifrnd(-1,1,1,1));
   a=sum(A);
+  b=sum(B);
   if a==1                    
     a=1;                     
-   else                      
-   a=-1;                     
+   elseif a<1                     
+   a=-1; 
+   elseif b==1
+    b=1;
+   else
+    b=-1;  
   endif
-  No=No+a;
+  N1=N1+a;
+  N2=N2+b;
+  N3=N3+a;
   
 #Condición ciclo: al llegar al valor de "l" regresa a "-l" y viceversa
   if N1>l                    
     N1=-l;                    
   elseif N1<-l               
     N1=l;
-  elseif N2>l
-    N2=-l;
+  elseif N2>l                    
+    N2=-l;                    
   elseif N2<-l               
     N2=l;
-  elseif N3>l
-    N3=-l;
-  elseif N2<-l               
-    N2=l;
-   else
+   elseif N3>l                    
+    N3=-l;                    
+  elseif N3<-l               
+    N3=l;
+  else
     N1=N1;
     N2=N2;
     N3=N3;
-    endif 
-  No
+  endif 
+  
+  No=[N1 N2 N3]
 endfor
