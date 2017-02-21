@@ -2,7 +2,7 @@ clc
 #Definicion de variables
 t=6;        #tiempo
 l=1;        #largo de eje
-p=2;        #No particulas 
+p=5;        #No particulas 
 n=2;        #No de dimensiones
 a=0;
 contador = 0;
@@ -43,13 +43,12 @@ d=round(unifrnd(1,n,1,1));
    
   N1  #Muestra posiciones
   
-  #muestra particula
   plot(N1(:,1),N1(:,2),'pr',"markersize", 10)
   xlim([-l,l]);
   ylim([-l,l]);
   saveas(gcf,strcat('ploty',num2str(T),'.png'));
   
-#Gera   
+#Colisión   
   pause(.1);
   contador = 0;
   choque=[];
@@ -57,19 +56,17 @@ d=round(unifrnd(1,n,1,1));
     for Q=1:p-1  
       for j=(Q+1):p
         if (sum(N1(Q,:) == N1(j,:)) == n) 
-          contador=contador+1;
-          crash=N1(Q,:); %Choques individuales en la matriz.
-          choque=[choque;crash] #posicion de colisión
-          plot(choque,'pb',"markersize", 10) #muestra y cambia de color a la colisión
+          crash=N1(Q,:); #choque individual
+          choque=[choque;crash] #Muestra posición de colisión
+          plot(N1(:,1),N1(:,2),'pr',choque,'pb',"markersize", 10) #cambio de color en colisiones
           xlim([-l,l]);
           ylim([-l,l]);
           saveas(gcf,strcat('ploty',num2str(T),'.png'));
-        end
+         end
       end
     end
   end
-  contador
   dist=N1;  
-#Gera fin  
+#Fin colisión 
   
 endfor
