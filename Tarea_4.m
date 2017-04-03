@@ -38,7 +38,7 @@ V = 15; #Velocidad
     for j=(i+1):n
       dx = x(i,1)-x(j,1);
       dy = x(i,2)-x(j,2);
-        #Sí distancia menor igual a diametro
+        #Repulsión
         if sqrt((dx*dx)+(dy*dy)) <= 2*r   
           x(i,1) = x(i,1)-Vx(i)*dt;
           x(i,2) = x(i,2)-Vy(i)*dt; 
