@@ -1,9 +1,9 @@
-clc
+ clc
 %Definir constantes
 l=10;                %largo de eje
 p=2;                 %atenuación
 n1=300;                %No particulas
-n2=3;                %No de dimensiones 
+n2 = 3;                %No de dimensiones 
 sumatoria=0;
 
 %Inicio de programa
@@ -23,5 +23,6 @@ for i=1:n1        %Operaciones de distancia
   R=sqrt(s);
   r(1,i)=R;
   endfor
+  
 hist (r)
  
