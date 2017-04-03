@@ -34,6 +34,7 @@ V = 15; #Velocidad
     endfor
    endfor 
     
+    
    for i=1:n
     for j=(i+1):n
       dx = x(i,1)-x(j,1);
