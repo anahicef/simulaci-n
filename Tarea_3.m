@@ -5,7 +5,6 @@ l=1;        #largo de eje
 p=5;        #No particulas 
 n=2;        #No de dimensiones
 a=0;
-contador = 0;
 
 
 #inicio de programa
@@ -50,15 +49,16 @@ d=round(unifrnd(1,n,1,1));
   
 #Colisión   
   pause(.1);
-  contador = 0;
-  choque=[];
+  c = 0;
+  k = [];
   if p>1
     for Q=1:p-1  
       for j=(Q+1):p
         if (sum(N1(Q,:) == N1(j,:)) == n) 
-          crash=N1(Q,:); #choque individual
-          choque=[choque;crash] #Muestra posición de colisión
-          plot(N1(:,1),N1(:,2),'pr',choque,'pb',"markersize", 10) #cambio de color en colisiones
+          sh=N1(Q,:); #choque individual
+          k = [k;sh] #Muestra posición de colisión
+          c = c+1; #cuenta colisiones
+          plot(N1(:,1),N1(:,2),'pr',k,'pb',"markersize", 10) #cambio de color en colisiones
           xlim([-l,l]);
           ylim([-l,l]);
           saveas(gcf,strcat('ploty',num2str(T),'.png'));
@@ -70,3 +70,4 @@ d=round(unifrnd(1,n,1,1));
 #Fin colisión 
   
 endfor
+c #muestra numero de colisiones
