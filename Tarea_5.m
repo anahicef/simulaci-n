@@ -40,8 +40,8 @@ V = 15; #Velocidad
       dx = x(i,1)-x(j,1);
       dy = x(i,2)-x(j,2);
         #Repulsión
-        if sqrt((dx*dx)+(dy*dy)) <= 2*r   
-          x(i,1) = x(i,1)-Vx(i)*dt;
+        if sqrt((dx*dx)+(dy*dy)) <= 2*r   #a partir de un radio genera un cambio en velocidad
+          x(i,1) = x(i,1)-Vx(i)*dt;       #y cambio de dirección para generar repulsión
           x(i,2) = x(i,2)-Vy(i)*dt; 
             for i=1:n;
               x(i,1) = x(i,1)-Vx(i)*dt;
