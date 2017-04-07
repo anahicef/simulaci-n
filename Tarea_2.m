@@ -11,7 +11,7 @@ contador = 0;
 
 N1=round(unifrnd(-l,l,p,n))  #Genera un número alearorio dentro de "l"
 
-for T=1:t                    #Bucle de tiempo 
+for T = 1:t                    #Bucle de tiempo 
 
 #Define en q dimensión se hará la suma
 d=round(unifrnd(1,n,1,1));
