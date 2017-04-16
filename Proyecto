@@ -1,0 +1,41 @@
+clear
+clc
+clf;  
+colormap ("rainbow");  
+ 
+#.-.-VARIABLES-.-.
+ #Tamaño de gasa (cm)
+ n = 15;
+ 
+ #Temperatura (°C)
+ T1 = 25;
+ T2 = 65;
+  
+ #Tiempo de crecimiento
+ dt = 0.1;
+ t = 60;
+ V = 10;
+ 
+#Inicio de programa
+
+ #Genera matriz en un rango de temperatura con una dimension n
+ x = unifrnd(T1,T2,n);  
+ #x = kron (1:n, ones (n,1));
+ #x = abs (x + x.');  #Matriz aleatoria
+ Vx = V*rand(n,2)-5; #Velocidad de crecimiento
+ imagesc (x);  
+ colorbar ();  
+ title ("Crecimiento de nanoparticulas");
+ 
+#Ciclo de crecimiento 
+ for i = 1:t
+  for j = (i+1):t
+    dx = x(i,1)-x(j,1);
+    x(i,1) = x(i,1)-Vx(i)*dt;
+    pause (dt)
+    hold on
+    imagesc (x); 
+    hold off
+  endfor
+ endfor
+ 
