@@ -1,41 +1,85 @@
-clear
+clear all
 clc
 clf;  
 colormap ("rainbow");  
+h = colorbar ()
+ytick = get (h, "ytick");
  
-#.-.-VARIABLES-.-.
- #Tamaño de gasa (cm)
- n = 15;
- 
- #Temperatura (°C)
- T1 = 25;
- T2 = 65;
-  
- #Tiempo de crecimiento
- dt = 0.1;
- t = 60;
- V = 10;
- 
-#Inicio de programa
+ #.-.-.PARÁMETROS DE EVALUACIÓN.-.-.
+ Kn = 1.0e7;      #Cte. de velocidad de nucleación
+ n = 4.2;         #Orden de nucleación
+ Kg = 8.06e-9;    #Cte. de velocidad de crecimiento
+ g = 2.0;         #Orden de crecimiento
+ C = 2.2e-9;      #Concentración de Ca(OH)2
+ Ksp = 3.47e-3;   #Solubilidad
+ k = 12.4;        #
+ p = 2.71;        #Densidad del cristal
+ Li = 40e-9;      #Tamaño de partícula
+ t = 10;          #tiempo de reacción
+ alpha = pi/6;    #Conciderando una particula esferica
 
- #Genera matriz en un rango de temperatura con una dimension n
- x = unifrnd(T1,T2,n);  
- #x = kron (1:n, ones (n,1));
- #x = abs (x + x.');  #Matriz aleatoria
- Vx = V*rand(n,2)-5; #Velocidad de crecimiento
- imagesc (x);  
- colorbar ();  
- title ("Crecimiento de nanoparticulas");
+ N = 15;          #Tamaño de gasa (cm)
  
-#Ciclo de crecimiento 
+ T1 = 25;         #Temperatura inicial (°C)
+ T2 = 65;         #Temperatura final (°C)
+  
+ dt = 0.2;
+ Gsum = 0;
+
+ 
+ #Inicio de programa
+ 
+ #Genera matriz en un rango de temperatura con una dimensión 
+ 
+ x = unifrnd(T1,T2,N);  
+ subplot(223),
+ imagesc (x);
+ colorbar ();  
+ caxis([T1 75])
+ title ("Crecimiento de nanoparticulas en paso: ");
+ 
+
  for i = 1:t
-  for j = (i+1):t
-    dx = x(i,1)-x(j,1);
-    x(i,1) = x(i,1)-Vx(i)*dt;
-    pause (dt)
+    G = i^g*Kg*((sqrt(C)-sqrt(Ksp))^g);  #Crecimiento del cristal
+    Jn = i*Kn*((sqrt(C)-sqrt(Ksp))^n);   #Nucleación
+    Vx = G*rand(N*N,2)-5;                #Velocidad de crecimiento 
+    
+    #Ecuación de crecimiento basada en la masa
+    G1 = pi*p*G*(Li^2)*1e23;                  #Crecimiento con masa
+    Gsum = Gsum+G1;                      #Sumatoría de crecimiento
+    subplot(221),
+    plot(i,Gsum,'x','markersize',11)
+    xlabel('t (s)'),ylabel('L (nm)')
+    title ("Crecimiento");
     hold on
-    imagesc (x); 
-    hold off
-  endfor
+     
+    #Ecuación de nuclación basada en la masa
+    B1 = alpha*p*Jn*(i*Li^3)*T1*1e18;        #Nucleación con masa
+    subplot(222),
+    plot(i,B1,'*','markersize',11)
+    xlabel('t (s)'),ylabel('L (nm)')
+    title ("Nucleacion");
+    hold on
  endfor
  
+#Ciclo de crecimiento
+for paso = 1:t 
+   for i = 1:N
+     for j = 1:N
+       x(i,j) = x(i,j)-Vx((i-1)*N + j)*dt;
+     endfor
+   endfor
+  pause (0.3)
+  hold on
+  subplot(223),
+  imagesc(x);
+  caxis([T1 75]) 
+  colorbar ();  
+  title(["Crecimiento de nanoparticulas en paso: ", num2str(paso)]);
+  hold off
+endfor
+
+%Muestra resultados obtenidos
+clc
+disp('RESULTADOS:') 
+fprintf(' Crecimiento: %g nm.  \n Nucleacion: %g nm.', Gsum, B1);
