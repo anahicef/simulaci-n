@@ -4,6 +4,7 @@ clf;
 colormap ("rainbow");  
 h = colorbar ()
 ytick = get (h, "ytick");
+paso = 0;
  
  #.-.-.PARÁMETROS DE EVALUACIÓN.-.-.
  Kn = 1.0e7;      #Cte. de velocidad de nucleación
@@ -12,10 +13,9 @@ ytick = get (h, "ytick");
  g = 2.0;         #Orden de crecimiento
  C = 2.2e-9;      #Concentración de Ca(OH)2
  Ksp = 3.47e-3;   #Solubilidad
- k = 12.4;        #
  p = 2.71;        #Densidad del cristal
  Li = 40e-9;      #Tamaño de partícula
- t = 10;          #tiempo de reacción
+ t = 10;          #Tiempo de reacción
  alpha = pi/6;    #Conciderando una particula esferica
 
  N = 15;          #Tamaño de gasa (cm)
@@ -32,53 +32,65 @@ ytick = get (h, "ytick");
  #Genera matriz en un rango de temperatura con una dimensión 
  
  x = unifrnd(T1,T2,N);  
- subplot(223),
+ figure (1)
  imagesc (x);
+ #axis([15, 0, 0, 15])
  colorbar ();  
  caxis([T1 75])
  title ("Crecimiento de nanoparticulas en paso: ");
  
 
  for i = 1:t
-    G = i^g*Kg*((sqrt(C)-sqrt(Ksp))^g);  #Crecimiento del cristal
-    Jn = i*Kn*((sqrt(C)-sqrt(Ksp))^n);   #Nucleación
-    Vx = G*rand(N*N,2)-5;                #Velocidad de crecimiento 
+  G = i^g*Kg*((sqrt(C)-sqrt(Ksp))^g);  #Crecimiento del cristal
+  Jn = i*Kn*((sqrt(C)-sqrt(Ksp))^n);   #Nucleación
+  Vx = G*rand(N*N,2)-5;                #Velocidad de crecimiento 
     
-    #Ecuación de crecimiento basada en la masa
-    G1 = pi*p*G*(Li^2)*1e23;                  #Crecimiento con masa
-    Gsum = Gsum+G1;                      #Sumatoría de crecimiento
-    subplot(221),
-    plot(i,Gsum,'x','markersize',11)
-    xlabel('t (s)'),ylabel('L (nm)')
-    title ("Crecimiento");
-    hold on
-     
-    #Ecuación de nuclación basada en la masa
-    B1 = alpha*p*Jn*(i*Li^3)*T1*1e18;        #Nucleación con masa
-    subplot(222),
-    plot(i,B1,'*','markersize',11)
-    xlabel('t (s)'),ylabel('L (nm)')
-    title ("Nucleacion");
-    hold on
- endfor
- 
-#Ciclo de crecimiento
-for paso = 1:t 
-   for i = 1:N
-     for j = 1:N
-       x(i,j) = x(i,j)-Vx((i-1)*N + j)*dt;
-     endfor
-   endfor
-  pause (0.3)
+  figure(2)
+  #Ecuación de crecimiento basada en la masa
+  G1 = pi*p*G*(Li^2)*1e23;                  #Crecimiento con masa
+  Gsum = Gsum+G1;                      #Sumatoría de crecimiento
+  subplot(121),
+  plot(i,Gsum,'x','markersize',11)
+  axis([0 t 0 30], 'square')
+  xlabel('t (s)'),ylabel('L (nm)')
+  title ("Crecimiento");
   hold on
-  subplot(223),
+     
+  #Ecuación de nuclación basada en la masa
+  B1 = alpha*p*Jn*(i*Li^3)*T1*1e18;        #Nucleación con masa
+  subplot(122),
+  plot(i,B1,'*','markersize',11)
+  axis([0 t 0 20], 'square')
+  xlabel('t (s)'),ylabel('L (nm)')
+  title ("Nucleacion");
+  hold on
+  
+ 
+  #Bucle de crecimiento en fibras 
+  for ii = 1:N
+    for j = 1:N
+      x(ii,j) = x(ii,j)-Vx((ii-1)*N + j)*dt;
+    endfor
+  endfor
+  paso = paso+1
+  pause (0.3)
+  figure(1)
+  hold on
   imagesc(x);
+  #axis([0, 15, 0, 15])
   caxis([T1 75]) 
   colorbar ();  
   title(["Crecimiento de nanoparticulas en paso: ", num2str(paso)]);
   hold off
-endfor
-
+ 
+ endfor
+ 
+ #media de particulas
+ #figure (2)
+ #subplot(133)
+ #bar(x,T2)
+ #set(gca,'XLim',[T1 T2]);  
+ 
 %Muestra resultados obtenidos
 clc
 disp('RESULTADOS:') 
