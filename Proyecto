@@ -16,7 +16,7 @@ paso = 0;
  p = 2.71;        #Densidad del cristal
  Li = 40e-9;      #Tamaño de partícula
  t = 10;          #Tiempo de reacción
- alpha = pi/6;    #Conciderando una particula esferica
+ alpha = pi/6;    #Conciderando una partícula esférica
 
  N = 15;          #Tamaño de gasa (cm)
  
@@ -29,8 +29,7 @@ paso = 0;
  
  #Inicio de programa
  
- #Genera matriz en un rango de temperatura con una dimensión 
- 
+ #Genera matriz en un rango de temperatura con una dimensión "N"
  x = unifrnd(T1,T2,N);  
  figure (1)
  imagesc (x);
@@ -47,11 +46,11 @@ paso = 0;
     
   figure(2)
   #Ecuación de crecimiento basada en la masa
-  G1 = pi*p*G*(Li^2)*1e23;                  #Crecimiento con masa
+  G1 = pi*p*G*(Li^2)*1e23;             #Crecimiento con masa
   Gsum = Gsum+G1;                      #Sumatoría de crecimiento
   subplot(121),
   plot(i,Gsum,'x','markersize',11)
-  axis([0 t 0 30], 'square')
+  axis([0 t 0 25], 'square')
   xlabel('t (s)'),ylabel('L (nm)')
   title ("Crecimiento");
   hold on
@@ -60,7 +59,7 @@ paso = 0;
   B1 = alpha*p*Jn*(i*Li^3)*T1*1e18;        #Nucleación con masa
   subplot(122),
   plot(i,B1,'*','markersize',11)
-  axis([0 t 0 20], 'square')
+  axis([0 t 0 25], 'square')
   xlabel('t (s)'),ylabel('L (nm)')
   title ("Nucleacion");
   hold on
@@ -72,7 +71,7 @@ paso = 0;
       x(ii,j) = x(ii,j)-Vx((ii-1)*N + j)*dt;
     endfor
   endfor
-  paso = paso+1
+  paso = paso+1;
   pause (0.3)
   figure(1)
   hold on
@@ -85,13 +84,13 @@ paso = 0;
  
  endfor
  
- #media de particulas
- #figure (2)
- #subplot(133)
- #bar(x,T2)
- #set(gca,'XLim',[T1 T2]);  
+ #Media de partículas
+ figure (3)
+ Rx = mean(x,2);     #Media de columnas ordenada en un vector
+ md = mean(Rx);
+ hist(Rx); 
  
 %Muestra resultados obtenidos
 clc
 disp('RESULTADOS:') 
-fprintf(' Crecimiento: %g nm.  \n Nucleacion: %g nm.', Gsum, B1);
+fprintf(' Crecimiento: %g nm.  \n Nucleacion: %g nm. \n Tamano medio de particula: %g nm. \n', Gsum, B1, md);
