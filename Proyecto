@@ -84,11 +84,6 @@ paso = 0;
  endfor
  
  #Media de partículas
- figure (3)
- Rx = mean(x,2);     #Media de columnas ordenada en un vector
- md = mean(Rx);
-  #Media de partículas
- figure (3)
  Rx = mean(x,2);     #Media de columnas ordenada en un vector
  md = mean(Rx);
 
