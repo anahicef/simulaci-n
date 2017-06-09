@@ -33,7 +33,6 @@ paso = 0;
  x = unifrnd(T1,T2,N);  
  figure (1)
  imagesc (x);
- #axis([15, 0, 0, 15])
  colorbar ();  
  caxis([T1 75])
  title ("Crecimiento de nanoparticulas en paso: ");
@@ -88,7 +87,17 @@ paso = 0;
  figure (3)
  Rx = mean(x,2);     #Media de columnas ordenada en un vector
  md = mean(Rx);
- hist(Rx); 
+  #Media de partículas
+ figure (3)
+ Rx = mean(x,2);     #Media de columnas ordenada en un vector
+ md = mean(Rx);
+
+ #Muestra histograma para tamaños de partícula obtenidos
+ figure (3)
+ hist(x); 
+ xlabel('Tamano de particula (nm)'); 
+ ylabel('Frecuencia'); 
+ title('HISTOGRAMA');
  
 %Muestra resultados obtenidos
 clc
